@@ -43,22 +43,31 @@ if (is_user_logged_in()) {
 
                 <ol class="commentlist">
                     <li class="comment byuser comment-author-admin bypostauthor even thread-even depth-1" id="li-comment-2" style="list-style: none"> 
+                       <?php $args = array(
+                            'post_id' => 1,
+                            'comment_type' => 'author'
+                         ); 
+                        $comments = get_comments($args);
+                        $counter = 1;
+                        foreach ($comments as $comment) :
+                            $ratings = get_comment_meta($comment->comment_ID, 'rating', TRUE);
+                        ?>
                         <div id="comment-2" class="comment_container">
-                            <img alt src="http://2.gravatar.com/avatar/5662ab2ebf957a3b151b874e358cc0cc?s=60&d=mm&r=g" srcset="http://2.gravatar.com/avatar/5662ab2ebf957a3b151b874e358cc0cc?s=120&d=mm&r=g 2x" class="avatar avatar-60 photo" height="50" width="50"</div> 
+                            <?php echo get_avatar($comment->comment_author_email, 50); ?>
                         <div class="comment-text" style="border: solid 1px #e4e1e3; border-radius: 4px; width: 95%; float: right; padding: 20px 0px 0px 15px;"  >
                             <div class="star-rating" style="float: right;">
                                 <span style="width:100%">
                                     <fieldset class="rating">
-                                        <input type="radio" id="star5" name="rating" value="5" /><label class = "full" for="star5" title="Awesome - 5 stars"></label>
-                                        <input type="radio" id="star4half" name="rating" value="4 and a half" /><label class="half" for="star4half" title="Pretty good - 4.5 stars"></label>
-                                        <input type="radio" id="star4" name="rating" value="4" /><label class = "full" for="star4" title="Pretty good - 4 stars"></label>
-                                        <input type="radio" id="star3half" name="rating" value="3 and a half" /><label class="half" for="star3half" title="Meh - 3.5 stars"></label>
-                                        <input type="radio" id="star3" name="rating" value="3" /><label class = "full" for="star3" title="Meh - 3 stars"></label>
-                                        <input type="radio" id="star2half" name="rating" value="2 and a half" /><label class="half" for="star2half" title="Kinda bad - 2.5 stars"></label>
-                                        <input type="radio" id="star2" name="rating" value="2" /><label class = "full" for="star2" title="Kinda bad - 2 stars"></label>
-                                        <input type="radio" id="star1half" name="rating" value="1 and a half" /><label class="half" for="star1half" title="Meh - 1.5 stars"></label>
-                                        <input type="radio" id="star1" name="rating" value="1" /><label class = "full" for="star1" title="Sucks big time - 1 star"></label>
-                                        <input type="radio" id="starhalf" name="rating" value="half" /><label class="half" for="starhalf" title="Sucks big time - 0.5 stars"></label>
+                                        <input type="radio" id="star5" name="rating<?php echo $counter; ?>" value="5" /><label class = "full" for="star5" title="Awesome - 5 stars"></label>
+                                        <input type="radio" id="star4half" name="rating<?php echo $counter; ?>" value="4 and a half" /><label class="half" for="star4half" title="Pretty good - 4.5 stars"></label>
+                                        <input type="radio" id="star4" name="rating<?php echo $counter; ?>" value="4" /><label class = "full" for="star4" title="Pretty good - 4 stars"></label>
+                                        <input type="radio" id="star3half" name="rating<?php echo $counter; ?>" value="3 and a half" /><label class="half" for="star3half" title="Meh - 3.5 stars"></label>
+                                        <input type="radio" id="star3" name="rating<?php echo $counter; ?>" value="3" /><label class = "full" for="star3" title="Meh - 3 stars"></label>
+                                        <input type="radio" id="star2half" name="rating<?php echo $counter; ?>" value="2 and a half" /><label class="half" for="star2half" title="Kinda bad - 2.5 stars"></label>
+                                        <input type="radio" id="star2" name="rating<?php echo $counter; ?>" value="2" /><label class = "full" for="star2" title="Kinda bad - 2 stars"></label>
+                                        <input type="radio" id="star1half" name="rating<?php echo $counter; ?>" value="1 and a half" /><label class="half" for="star1half" title="Meh - 1.5 stars"></label>
+                                        <input type="radio" id="star1" name="rating<?php echo $counter; ?>" value="1" /><label class = "full" for="star1" title="Sucks big time - 1 star"></label>
+                                        <input type="radio" id="starhalf" name="rating<?php echo $counter; ?>" value="half" /><label class="half" for="starhalf" title="Sucks big time - 0.5 stars"></label>
                                     </fieldset>
                                     <strong></strong>
                                 </span>
@@ -73,6 +82,11 @@ if (is_user_logged_in()) {
                                 <p>Nice</p>
                             </div>
                         </div>
+                        </div>
+                        <?php $counter++;
+ endforeach; 
+ ?>
+                    </li>
                 </ol>
             </div>
         </div>
