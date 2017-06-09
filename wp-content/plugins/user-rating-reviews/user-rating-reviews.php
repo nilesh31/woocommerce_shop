@@ -94,7 +94,7 @@ function user_shortcode_func($atts) {
 
     $author = explode(',', $atts['author']);
     $args = array(
-        'post_id' => 1,
+        //'post_id' => 1,
         'comment_type' => 'author',
         'user_id' => $author,
     );
