@@ -82,6 +82,7 @@ function user_rating_review() {
 
 add_action('wp', 'user_rating_review');
 ?>
+
 <?php
 //////create user shortcode here...//////////////////
 add_shortcode("user_shortcode", "user_shortcode_func");
@@ -100,7 +101,7 @@ function user_shortcode_func($atts) {
     $comments = get_comments($args);
     ?>
     <div class = "comments">
-        <h2 class = "woocommerce-Reviews-title">1 review for <span>lenovo G-580</span></h2>
+        <h2 class = "woocommerce-Reviews-title">1 review for <span>formal shirt</span></h2>
         <ol class = "commentlist" style = "list-style:none;">
             <li class = "comment byuser comment-author-admin bypostauthor even thread-even depth-1" id = "li-comment-33">
                 <?php

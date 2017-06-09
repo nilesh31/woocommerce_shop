@@ -1,6 +1,6 @@
 <?php
 get_header();
-
+//loging user information get here....///
 if (is_user_logged_in()) {
     $user_id = get_current_user_id();
     $userinfo = get_userdata($user_id);
@@ -44,6 +44,7 @@ if (is_user_logged_in()) {
                 <ol class="commentlist">
                     <li class="comment byuser comment-author-admin bypostauthor even thread-even depth-1" id="li-comment-2" style="list-style: none"> 
                         <?php
+                        //get comment argument code///
                         $args = array(
                             'post_id' => '',
                             'comment_type' => ''
