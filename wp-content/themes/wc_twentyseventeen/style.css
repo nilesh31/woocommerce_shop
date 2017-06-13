@@ -4380,3 +4380,43 @@ div#review_form{
     }
 }
 
+div#ajax-filter {
+    width: 20%;
+    padding: 220px 0px 0 25px;
+    /* margin-left: 8px; */
+    float: right;
+}
+div#ajax-filter {
+    width: 22%;
+    padding: 220px 0px 0 75px;
+    /* margin-left: 8px; */
+    float: right;
+}
+div#slider-range{
+        width: 90%;
+    float: left;
+}
+div#content {
+    width: 78%;
+    float: left;
+}
+div#category {
+    margin: 20px 0px;
+    border: 1px solid;
+    border-color: #e9e9e9;
+    padding: 20px 10px;
+}
+select#category {
+    margin-top: 15px;
+}
+.custom_range {
+    width: 100%;
+    float: left;
+    border: 1px solid;
+    border-color: #e9e9e9;
+    padding: 20px 10px;
+}
+.ui-slider-range.ui-corner-all.ui-widget-header{
+    background-color:rgba(47, 171, 206, 0.82);
+}
+

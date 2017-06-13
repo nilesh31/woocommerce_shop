@@ -446,8 +446,12 @@ function twentyseventeen_scripts() {
         $twentyseventeen_l10n['expand'] = __('Expand child menu', 'twentyseventeen');
         $twentyseventeen_l10n['collapse'] = __('Collapse child menu', 'twentyseventeen');
         $twentyseventeen_l10n['icon'] = twentyseventeen_get_svg(array('icon' => 'angle-down', 'fallback' => true));
-    }
+        wp_register_script('jquery-scrollto', get_theme_file_uri('/assets/js/woo-commerce.js'), array(), '',  true);
+        //wp_register_script('jquery-scrollto', get_theme_file_uri('/assets/js/woo-commerce.js'), true);
 
+
+    }
+    
     wp_enqueue_script('twentyseventeen-global', get_theme_file_uri('/assets/js/global.js'), array('jquery'), '1.0', true);
 
     wp_enqueue_script('jquery-scrollto', get_theme_file_uri('/assets/js/jquery.scrollTo.js'), array('jquery'), '2.1.2', true);
@@ -756,7 +760,7 @@ function wc_user_cart_discount() {
     $totalamount = $totalamount + $user_discount;
 
     if ($totalamount < 500) {
-        
+
         wc_add_notice(__('oops you can not use coupon..', 'woocommerce'), 'error');
         wc_clear_notices(); //this function for clear message
         WC()->cart->remove_coupons($coupon_code);
@@ -787,4 +791,18 @@ function cart_update_qty_script() {
         </script>
         <?php
     endif;
+}
+
+add_action('wp_ajax_product_filter_by_price', 'product_filter');
+add_action('wp_ajax_nopriv_product_filter_by_price', 'product_filter');
+
+function product_filter() {
+    $price = $_REQUEST['price'];
+    $price = str_replace("$", "", $price);
+    $price = explode("-", $price);
+    $min_price = intval($price[0]);
+    $max_price = intval($price[1]);
+
+
+    exit();
 }
