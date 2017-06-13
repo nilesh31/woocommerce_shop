@@ -395,11 +395,11 @@ function twentyseventeen_colors_css_wrap() {
     $hue = absint(get_theme_mod('colorscheme_hue', 250));
     ?>
     <style type="text/css" id="custom-theme-colors" <?php
-           if (is_customize_preview()) {
-               echo 'data-hue="' . $hue . '"';
-           }
-           ?>>
-               <?php echo twentyseventeen_custom_colors_css(); ?>
+    if (is_customize_preview()) {
+        echo 'data-hue="' . $hue . '"';
+    }
+    ?>>
+    <?php echo twentyseventeen_custom_colors_css(); ?>
     </style>
     <?php
 }
@@ -446,12 +446,10 @@ function twentyseventeen_scripts() {
         $twentyseventeen_l10n['expand'] = __('Expand child menu', 'twentyseventeen');
         $twentyseventeen_l10n['collapse'] = __('Collapse child menu', 'twentyseventeen');
         $twentyseventeen_l10n['icon'] = twentyseventeen_get_svg(array('icon' => 'angle-down', 'fallback' => true));
-        wp_register_script('jquery-scrollto', get_theme_file_uri('/assets/js/woo-commerce.js'), array(), '',  true);
+        wp_register_script('jquery-scrollto', get_theme_file_uri('/assets/js/woo-commerce.js'), array(), '', true);
         //wp_register_script('jquery-scrollto', get_theme_file_uri('/assets/js/woo-commerce.js'), true);
-
-
     }
-    
+
     wp_enqueue_script('twentyseventeen-global', get_theme_file_uri('/assets/js/global.js'), array('jquery'), '1.0', true);
 
     wp_enqueue_script('jquery-scrollto', get_theme_file_uri('/assets/js/jquery.scrollTo.js'), array('jquery'), '2.1.2', true);
@@ -744,7 +742,6 @@ add_action('woocommerce_applied_coupon', 'get_coupons', 20);
 add_action('woocommerce_cart_updated', 'wc_user_cart_discount');
 
 function wc_user_cart_discount() {
-
     global $woocommerce;
     global $current_user;
     get_currentuserinfo();
@@ -758,9 +755,7 @@ function wc_user_cart_discount() {
         }
     }
     $totalamount = $totalamount + $user_discount;
-
     if ($totalamount < 500) {
-
         wc_add_notice(__('oops you can not use coupon..', 'woocommerce'), 'error');
         wc_clear_notices(); //this function for clear message
         WC()->cart->remove_coupons($coupon_code);
@@ -774,7 +769,6 @@ function wc_user_cart_discount() {
         }
     }
 }
-
 ////===================onchnage event code here==============================//
 add_action('wp_footer', 'cart_update_qty_script');
 
@@ -784,7 +778,7 @@ function cart_update_qty_script() {
         <script>
             jQuery('div.woocommerce').on('change', '.quantity', function () {
                 //jQuery("[name='update_cart']").removeAttr('disabled');
-                jQuery('qty').mouseout()(function){
+                 jQuery(".qty").mouseout(function(){
                 jQuery("[name='update_cart']").trigger("click");
             });
             });
@@ -792,17 +786,33 @@ function cart_update_qty_script() {
         <?php
     endif;
 }
-
-add_action('wp_ajax_product_filter_by_price', 'product_filter');
-add_action('wp_ajax_nopriv_product_filter_by_price', 'product_filter');
-
+////===================price filter code here==============================//
 function product_filter() {
     $price = $_REQUEST['price'];
+    $category = $_REQUEST["category"];
     $price = str_replace("$", "", $price);
     $price = explode("-", $price);
     $min_price = intval($price[0]);
     $max_price = intval($price[1]);
-
-
+    $params = array('posts_per_page' => -1, 'post_type' => 'product', 'post_status' => 'publish');
+    if (!empty($category)) {
+        $params['tax_query'] = array(array('taxonomy' => 'product_cat', 'field' => 'slug', 'terms' => $category,),);
+    } if (!empty($min_price) && !empty($max_price)) {
+        $params['meta_query'] = array(array('key' => '_sale_price', 'value' => array($min_price, $max_price), 'compare' => 'between', 'type' => 'numeric',),);
+    } $loop = new WP_Query($params);
+    while ($loop->have_posts()) : $loop->the_post();
+        global $product;
+        ?><li class="product"><h3><?php the_title(); ?></h3><a href="<?php echo get_permalink($loop->post->ID) ?>" title="<?php echo esc_attr($loop->post->post_title ? $loop->post->post_title : $loop->post->ID); ?>"> <?php
+        woocommerce_show_product_sale_flash($post, $product);
+        if (has_post_thumbnail($loop->post->ID))
+            echo get_the_post_thumbnail($loop->post->ID, 'shop_catalog');
+        else
+            echo '<img src="' . woocommerce_placeholder_img_src() . '" alt="Placeholder" width="300px" height="300px" />';
+        ?>                <span class="price"><?php echo $product->get_price_html(); ?></span>                                </a> <?php woocommerce_template_loop_add_to_cart($loop->post, $product); ?>        </li> <?php
+    endwhile;
+    wp_reset_query();
     exit();
 }
+
+add_action('wp_ajax_product_filter_by_price', 'product_filter');
+add_action('wp_ajax_nopriv_product_filter_by_price', 'product_filter');
