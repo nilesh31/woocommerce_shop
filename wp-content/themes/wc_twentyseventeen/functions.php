@@ -714,10 +714,9 @@ function user_registration($user_id) {
     update_post_meta($new_coupon_id, 'free_shipping', 'no');
 // exit();
 }
-
 add_action('user_register', 'user_registration');
 
-//Delete coupan when user logout
+//Delete coupan when user logout code here
 function delete_coupan_user_logout() {
     global $current_user;
     get_currentuserinfo();
@@ -727,8 +726,8 @@ function delete_coupan_user_logout() {
         wp_delete_post($user_coupon_data->id);
     }
 }
-
 add_action('wp_logout', 'delete_coupan_user_logout');
+//Delete coupan when user logout code end
 
 //==============user get coupon code=============//
 function get_coupons() {
@@ -741,7 +740,7 @@ function get_coupons() {
     $coupon_code = $current_user->user_login;
     $applied_coupons = WC()->cart->get_applied_coupons();
     foreach ($applied_coupons as $coupons => $code) {
-        if ($coupon_code != $code) {
+        if ($coupon_code != $code) {//both are not same than it will remove coupon
             WC()->cart->remove_coupon($code);
             wc_clear_notices(); //this function for clear message
             wc_add_notice(__('you can not use this coupon.', 'woocommerce'), 'error'); //this function code for display message
@@ -775,10 +774,10 @@ function wc_user_cart_discount() {
         WC()->cart->remove_coupons($coupon_code);
         return;
     } else {
-        if (WC()->cart->has_discount($coupon_code)) {
+        if (WC()->cart->has_discount($coupon_code)) {//if have discount than check it
             
         } else {
-            WC()->cart->add_discount($coupon_code);
+            WC()->cart->add_discount($coupon_code);//if have discount than apply
         }
     }
 }
@@ -801,7 +800,7 @@ function cart_update_qty_script() {
     endif;
 }
 
-////===================price filter code here==============================//
+//===================price filter code here==============================//
 function product_filter() {
     $price = $_REQUEST['price'];
     $category = $_REQUEST["category"];
