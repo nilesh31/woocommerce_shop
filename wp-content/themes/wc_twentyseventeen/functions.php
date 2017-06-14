@@ -580,6 +580,7 @@ function action_woocommerce_before_shop_loop_item() {
     the_title('<h1 class="product_title entry-title">', '</h1>');
 }
 
+
 //==================my custom work code==========================================// 
 //display title on product page add the action////////////
 add_action('woocommerce_before_shop_loop_item', 'action_woocommerce_before_shop_loop_item');
@@ -663,8 +664,21 @@ function function_check_login_redirect($user_login, $user) {
 //exit();
     }
 }
-
 add_action('wp_login', 'function_check_login_redirect', 10, 2);
+
+//=======================checkout order user delete coupon=================================
+add_action('woocommerce_checkout_order_processed', 'checkout_order_user_delete_coupon', 10);
+
+function checkout_order_user_delete_coupon() {
+   global $current_user;
+   get_currentuserinfo();
+   $coupon_code = $current_user->user_login; // Code
+   $coupon_data = new WC_Coupon($coupon_code);
+   if (!empty($coupon_data->id)) {
+       wp_delete_post($coupon_data->id);
+   }
+}
+//=======================end delete coupon=================================
 
 //========================user registration=====================================//
 function user_registration($user_id) {
@@ -842,5 +856,11 @@ function product_filter() {
     wp_reset_query();
     exit();
 }
+//this hook for call backend ajax in woocommerce
 add_action('wp_ajax_product_filter_by_price', 'product_filter');
+
+//this hook for call frontend ajax in woocommerce
 add_action('wp_ajax_nopriv_product_filter_by_price', 'product_filter');
+
+
+

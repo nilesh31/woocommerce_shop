@@ -10,6 +10,7 @@
  * @version 1.0
  */
 if (!is_active_sidebar('sidebar-1')) {
+    if(is_shop()){
     $args = array(
         'orderby' => $orderby,
         'order' => $order,
@@ -38,6 +39,7 @@ if (!is_active_sidebar('sidebar-1')) {
 
     <?php
     return;
+}
 }
 ?>
 <aside id="secondary" class="widget-area" role="complementary">
