@@ -689,8 +689,7 @@ function user_registration($user_id) {
     $last_user_login_date = get_user_meta($user_id, 'last_login', $date);
 
 //Create a coupon code for WooCommerce
-//update_user_meta($user_id, 'last_login', $date);
-    $amount = '10'; // Coupon Amount
+    $amount = '10'; // Coupon Amount or WooCommerce
     $discount_type = 'fixed_cart'; // Type: fixed_cart, percent, fixed_product, percent_product
     $coupon = array(
         'post_title' => $codename,
@@ -821,7 +820,7 @@ function product_filter() {
                 'taxonomy' => 'product_cat',
                 'field' => 'slug',
                 'terms' => $category,
-                  
+                
             ),
         );
     }
@@ -855,10 +854,10 @@ function product_filter() {
     wp_reset_query();
     exit();
 }
-//this hook for call backend ajax in woocommerce
+//this hook for call backend ajax in woocommerce when login user
 add_action('wp_ajax_product_filter_by_price', 'product_filter');
 
-//this hook for call frontend ajax in woocommerce
+//this hook for call frontend ajax in woocommerce when logout user
 add_action('wp_ajax_nopriv_product_filter_by_price', 'product_filter');
 
 

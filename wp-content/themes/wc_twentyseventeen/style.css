@@ -4419,4 +4419,7 @@ select#category {
 .ui-slider-range.ui-corner-all.ui-widget-header{
     background-color:rgba(47, 171, 206, 0.82);
 }
-
+.admin-bar .site-navigation-fixed.navigation-top {
+    
+    z-index: 100;
+}
